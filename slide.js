@@ -5,7 +5,6 @@ $(document).ready(function(){
     var w = $(canvas).width();
     var h = $(canvas).height();
 
-    //Lets save the cell width in a variable for easy control
     var side = 4;
     var board;
     var cw = Math.round(w/side);
@@ -194,33 +193,24 @@ $(document).ready(function(){
    
     function paint()
     {
-        //We need to paint the BG on every frame
-        //Lets paint the canvas now
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, w, h);
         ctx.strokeStyle = "black";
         ctx.strokeRect(0, 0, w, h);
 
+        board.render();    
         if(win)
         {
             alert("Ganaste");
             win = false;
             enabled = false;
         }
-        
-        board.render();    
-        
-
-        
     }
-
 
     $("#restart").on("click",function(e) {
             init();
             return;
         });
-
-    
 
     function init()
     {
@@ -233,17 +223,14 @@ $(document).ready(function(){
         game_loop = setInterval(paint, 60);
     }
 
-
     //Lets add the keyboard controls now
     $(document).keydown(function(e){
         if  (!enabled) {return;}
         var key = e.which;
-        //We will add another clause to prevent reverse gear
         if(key == "37") board.switch_with(Left);
         else if(key == "38") board.switch_with(Up);
         else if(key == "39") board.switch_with(Right);
         else if(key == "40") board.switch_with(Down);
-        //The snake is now keyboard controllable
     });
 
     init();
