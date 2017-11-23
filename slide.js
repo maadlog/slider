@@ -96,7 +96,7 @@ $(document).ready(function(){
         }
 
         this.shuffle = function() {
-
+            
             for (var i = 0; i < this.slots.length; i++) {
                 var random_idx = i + Math.round(Math.random() * (this.slots.length-(i+1)))
 
@@ -111,14 +111,27 @@ $(document).ready(function(){
                 console.log("Not Solvable");
                 this.shuffle();
             }
+            
         }
 
 
         this.solvable = function() {
             
+            //Inversions start as 0 -> All numbers in order and space slot in squared position (side*side)
+            //So result = even;
+
+            // any legal movement its still even  ->
+            //      move up -> I now have the space on uneven position and n + (n-1) more permutations (uneven) so => result = even
+            //      move down -> Reverse: even space position and n + (n-1) less permutations => result = even
+            //      move left -> ueven space position and one more permutation => result = even
+            //      move right -> even space position and one less permutation => result = even
+
+            //Any combination that gets the space on an even slot also shields even permutations
+            //Any combination that gets the space on an uneven slot also shields uneven permutations
+
             var inversions_count = this.get_inversions(this.slots);
-            var e = this.space_slot.y + 1;
-            return ((inversions_count + e) % 2) == (this.side % 2);
+            var e = this.space_slot.y + this.space_slot.x;
+            return ((inversions_count + e) % 2) == 0;
 
         }
 
@@ -127,7 +140,7 @@ $(document).ready(function(){
             for (var i = 0; i < slot_array.length; i++) {
                 var actual_item = slot_array[i];
                 var permutations = slot_array.filter(function(item,index) {
-                    return index > i && item.piece.number < actual_item.piece.number;
+                    return item. index > i  && item.piece.number < actual_item.piece.number;
                 });
                 inversions_count += permutations.length;
             };
