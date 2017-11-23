@@ -5,7 +5,8 @@ $(document).ready(function(){
     var w = $(canvas).width();
     var h = $(canvas).height();
 
-    var side = 4;
+    //Lets save the cell width in a variable for easy control
+    var side = 3;
     var board;
     var cw = Math.round(w/side);
     var win = false;
@@ -32,11 +33,14 @@ $(document).ready(function(){
         }
     }
 
-    function Piece (number,color,space) {
+    function Piece (number,space,original_x,original_y) {
         this.number = number;
-        this.color = color;
+        
         this.space = space;
         this.slot = null;
+
+        this.original_x = original_x;
+        this.original_y = original_y;
         
         this.update_board_slot = function(aSlot) {
             this.slot = aSlot;
@@ -45,14 +49,25 @@ $(document).ready(function(){
 
         this.render = function(x,y) {
 
-            ctx.fillStyle = this.color;
-            ctx.fillRect(x*cw, y*cw, cw, cw);
+            var image = document.getElementById("image");
+            var scw = (image.width/side);
+
+            if(this.space && ! win) {
+
+                ctx.fillStyle = "white";
+                ctx.fillRect(x*cw, y*cw, cw, cw);
+
+            }
+            else
+            {
+                ctx.drawImage(image, original_x*scw, original_y*scw, scw, scw, x*cw, y*cw, cw, cw);
+            }
+
+
+
             ctx.strokeStyle = "white";
             ctx.strokeRect(x*cw, y*cw, cw, cw);
 
-            ctx.fillStyle = "black";
-            ctx.font=  Math.round(cw / 3) + "px Arial";
-            ctx.fillText(this.number, (x*cw) + Math.round(cw / 3), (y*cw) + Math.round(cw/3));
         }
 
     }
@@ -70,11 +85,11 @@ $(document).ready(function(){
         this.createPiece = function(x,y){
             if(x==y && x == (this.side -1))
                 {
-                return new Piece((this.side*x) + y,"red",true);    
+                return new Piece((this.side*x) + y,true,x,y);    
                 }
             else
              {
-                return new Piece((this.side*x) + y,"green",false);
+                return new Piece((this.side*x) + y,false,x,y);
              }
             
         }
@@ -193,24 +208,32 @@ $(document).ready(function(){
    
     function paint()
     {
+        //We need to paint the BG on every frame
+        //Lets paint the canvas now
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, w, h);
         ctx.strokeStyle = "black";
         ctx.strokeRect(0, 0, w, h);
 
+        
         board.render();    
-        if(win)
+
+        if(win && enabled)
         {
             alert("Ganaste");
-            win = false;
             enabled = false;
-        }
+        }        
+
+        
     }
+
 
     $("#restart").on("click",function(e) {
             init();
             return;
         });
+
+    
 
     function init()
     {
@@ -223,14 +246,17 @@ $(document).ready(function(){
         game_loop = setInterval(paint, 60);
     }
 
+
     //Lets add the keyboard controls now
     $(document).keydown(function(e){
         if  (!enabled) {return;}
         var key = e.which;
+        //We will add another clause to prevent reverse gear
         if(key == "37") board.switch_with(Left);
         else if(key == "38") board.switch_with(Up);
         else if(key == "39") board.switch_with(Right);
         else if(key == "40") board.switch_with(Down);
+        //The snake is now keyboard controllable
     });
 
     init();
