@@ -154,7 +154,7 @@ $(document).ready(function(){
             for (var i = 0; i < slot_array.length; i++) {
                 var actual_item = slot_array[i];
                 var permutations = slot_array.filter(function(item,index) {
-                    return item. index > i  && item.piece.number < actual_item.piece.number;
+                    return index > i  && item.piece.number < actual_item.piece.number;
                 });
                 inversions_count += permutations.length;
             };
