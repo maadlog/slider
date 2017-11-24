@@ -209,7 +209,10 @@ $(document).ready(function(){
    
     function paint()
     {
-        time += 1;
+        if (enabled)
+        {
+            time += 1;            
+        }
 
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, w, h);
