@@ -6,7 +6,7 @@ $(document).ready(function(){
     var h = $(canvas).height();
 
     //Lets save the cell width in a variable for easy control
-    var side = 3;
+    var side = 4;
     var board;
     var cw = Math.round(w/side);
     var win = false;
