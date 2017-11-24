@@ -7,10 +7,20 @@
     <script src="slide.js" type="text/javascript"></script>
 </head>
 <body>
-
-    <canvas id="canvas" width="450" height="450"></canvas>
-    <button id="restart">Restart</button>
-    <img id="image" src="slide.jpg" width="450" height="450">
+    <canvas id="canvas" width="450" height="450" style="float:left"></canvas>
+    <div  style="float:left; padding: 25px; width: 150px;">
+        <p>Time: <span id="time">0</span></p>
+        <button id="restart">Restart</button>
+        <p>Sides</p>
+        <select id="sides">
+          <option value="3">3 (Easy)</option>
+          <option value="4">4 (Normal)</option>
+          <option value="5">5 (Hardcore)</option>
+          <option value="6">6 (Hurt me plenty)</option>
+          <option value="10">10 (Nightmare)</option>
+        </select>
+    </div>
+    <img id="image" src="slide.jpg" width="450" height="450"  style="float:left">
 </body>
 </html>
 
