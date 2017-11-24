@@ -6,12 +6,13 @@ $(document).ready(function(){
     var h = $(canvas).height();
 
     //Lets save the cell width in a variable for easy control
-    var side = 4;
+    var side = 3;
     var board;
     var cw = Math.round(w/side);
     var win = false;
     var winstring;
     var enabled = true;
+    var time = 0;
 
     function BoardSlot(x,y,board) {
         this.board = board;
@@ -208,6 +209,8 @@ $(document).ready(function(){
    
     function paint()
     {
+        time += 1;
+
         //We need to paint the BG on every frame
         //Lets paint the canvas now
         ctx.fillStyle = "white";
@@ -217,6 +220,8 @@ $(document).ready(function(){
 
         
         board.render();    
+
+        document.getElementById("time").textContent = time + "";
 
         if(win && enabled)
         {
@@ -237,10 +242,14 @@ $(document).ready(function(){
 
     function init()
     {
+        side = document.getElementById("sides").value;
+        cw = Math.round(w/side);
         win = false;
         enabled = true;
         board = new Board(side);
         board.init();
+
+        time = 0;
 
         if(typeof game_loop != "undefined") clearInterval(game_loop);
         game_loop = setInterval(paint, 60);
